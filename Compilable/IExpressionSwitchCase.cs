@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Compilable
 {
-    internal interface IExpressionable
+    public interface IExpressionSwitchCase<TKey, TValue> : ISwitchCase<TKey, TValue>, ICompilable
     {
         Expression GetExpression();
     }

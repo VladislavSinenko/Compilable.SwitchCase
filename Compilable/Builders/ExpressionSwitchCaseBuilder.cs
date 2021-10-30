@@ -16,9 +16,9 @@ namespace Compilable.Builders
             throw new NotImplementedException();
         }
 
-        public ExpressionSwitchCase<TKey, TValue> GetExpressionSwitchCase()
+        public IExpressionSwitchCase<TKey, TValue> GetExpressionSwitchCase()
         {
-            return (ExpressionSwitchCase<TKey, TValue>)GetSwitchCase();
+            return (IExpressionSwitchCase<TKey, TValue>)GetSwitchCase();
         }
 
         public ISwitchCaseBuilder<TKey, TValue> SetDefault(TKey value)

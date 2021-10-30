@@ -1,3 +1,4 @@
+using Compilable.Delegates;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,22 +7,22 @@ using System.Text;
 
 namespace Compilable
 {
-    public delegate bool TryGetDelegate<TKey, TValue>(TKey key, TValue value);
-    public class ExpressionSwitchCase<TKey, TValue> : ISwitchCase<TKey, TValue>, ICompilable, IExpressionable
+    public class ExpressionSwitchCase<TKey, TValue> : IExpressionSwitchCase<TKey, TValue>, ISwitchCase<TKey, TValue>, ICompilable
     {
         private TryGetDelegate<TKey, TValue> _tryGet;
+        private Expression switchCaseExpression;
         public bool IsCompiled => _tryGet != null;
         public void Compile()
         {
-            var expression = GetExpression();
+            throw new NotImplementedException();
         }
         public Expression GetExpression()
         {
-            throw new NotImplementedException();
+            return switchCaseExpression;
         }
         public bool TryGetCase(TKey key, out TValue value)
         {
-            throw new NotImplementedException();
+            return _tryGet.Invoke(key, out value);
         }
     }
 }
