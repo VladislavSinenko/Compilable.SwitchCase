@@ -17,7 +17,8 @@ namespace Compilable.Extensions
             return cases
                 .Select(c => new KeyValuePair<TKey, TValue>(
                     (TKey)((ConstantExpression)c.TestValues[0]).Value, 
-                    (TValue)((ConstantExpression)((BinaryExpression)((BlockExpression)c.Body).Expressions[0]).Right).Value));
+                    (TValue)((ConstantExpression)((BinaryExpression)((BlockExpression)c.Body).Expressions[0]).Right).Value))
+                .Concat(new[] { new KeyValuePair<TKey, TValue>(default(TKey), (TValue)((ConstantExpression)((BinaryExpression)((BlockExpression)switchExpression.DefaultBody).Expressions[0]).Right).Value) });
         }
     }
 }
