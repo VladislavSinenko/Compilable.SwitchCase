@@ -7,18 +7,18 @@ using System.Text;
 
 namespace Compilable
 {
-    public class ExpressionSwitchCase<TKey, TValue> : IExpressionSwitchCase<TKey, TValue>, ISwitchCase<TKey, TValue>, ICompilable
+    public sealed class ExpressionSwitchCase<TKey, TValue> : IExpressionSwitchCase<TKey, TValue>, ISwitchCase<TKey, TValue>
     {
         private TryGetDelegate<TKey, TValue> _tryGet;
-        private Expression switchCaseExpression;
-        public bool IsCompiled => _tryGet != null;
-        public void Compile()
+        private Expression<TryGetDelegate<TKey, TValue>> _metadata;
+        public ExpressionSwitchCase(Expression<TryGetDelegate<TKey, TValue>> expression)
         {
-            throw new NotImplementedException();
+            _metadata = expression;
+            _tryGet = expression.Compile();
         }
         public Expression GetExpression()
         {
-            return switchCaseExpression;
+            return _metadata;
         }
         public bool TryGetCase(TKey key, out TValue value)
         {

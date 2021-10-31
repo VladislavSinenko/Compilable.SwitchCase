@@ -1,6 +1,6 @@
 namespace Compilable
 {
-    IExpressionSwitchCase interface ICompilable
+    public interface ICompilable
     {
         bool IsCompiled { get; }
         void Compile();
