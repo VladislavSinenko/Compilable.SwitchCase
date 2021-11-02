@@ -8,7 +8,7 @@ namespace Compilable.Extensions
 {
     public static class SwitchCaseExtensions
     {
-        public static IEnumerable<KeyValuePair<TKey, TValue>> AsEnumerable<TKey, TValue>(this IExpressionSwitchCase<TKey, TValue> switchCase)
+        public static IEnumerable<KeyValuePair<TKey, TValue>> AsEnumerable<TKey, TValue>(this ISwitchCase<TKey, TValue> switchCase)
         {
             var expression = (LambdaExpression)switchCase.GetExpression();
             var body = (BlockExpression)expression.Body;
@@ -19,7 +19,7 @@ namespace Compilable.Extensions
                     (TKey)((ConstantExpression)c.TestValues[0]).Value,
                     (TValue)((ConstantExpression)((BinaryExpression)((BlockExpression)c.Body).Expressions[0]).Right).Value));
         }
-        public static TValue GetDefaultCase<TKey, TValue>(this IExpressionSwitchCase<TKey, TValue> switchCase)
+        public static TValue GetDefaultCase<TKey, TValue>(this ISwitchCase<TKey, TValue> switchCase)
         {
             var expression = (LambdaExpression)switchCase.GetExpression();
             var body = (BlockExpression)expression.Body;

@@ -1,13 +1,14 @@
 using Compilable.Delegates;
+using System;
 using System.Linq.Expressions;
 
 namespace Compilable
 {
-    public sealed class ExpressionSwitchCase<TKey, TValue> : IExpressionSwitchCase<TKey, TValue>, ISwitchCase<TKey, TValue>
+    public class SwitchCase<TKey, TValue> : ISwitchCase<TKey, TValue>
     {
         private TryGetDelegate<TKey, TValue> _tryGet;
         private Expression<TryGetDelegate<TKey, TValue>> _metadata;
-        public ExpressionSwitchCase(Expression<TryGetDelegate<TKey, TValue>> expression)
+        public SwitchCase(Expression<TryGetDelegate<TKey, TValue>> expression)
         {
             _metadata = expression;
             _tryGet = expression.Compile();
