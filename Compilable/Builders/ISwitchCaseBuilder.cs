@@ -1,9 +1,11 @@
 namespace Compilable.Builders
 {
-    public interface ISwitchCaseBuilder<TKey, TValue>
+    public interface ISwitchCaseBuilder<TCase, TValue>
     {
-        ISwitchCaseBuilder<TKey, TValue> AddCase(TKey _case, TValue value);
-        ISwitchCaseBuilder<TKey, TValue> SetDefault(TValue value);
-        ISwitchCase<TKey, TValue> GetSwitchCase();
+        bool AddCase(TCase _case, TValue value);
+        bool UpdateCase(TCase _case, TValue value);
+        bool RemoveCase(TCase _case);
+        bool SetDefault(TValue value);
+        ISwitchCaseProvider<TCase, TValue> GetSwitchCase();
     }
 }

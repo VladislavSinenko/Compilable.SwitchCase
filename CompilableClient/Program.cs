@@ -1,6 +1,8 @@
 using Compilable;
 using Compilable.Builders;
+using Compilable.Delegates;
 using Compilable.Extensions;
+using Compilable.Factories;
 using System;
 using System.Collections.Generic;
 
@@ -10,15 +12,25 @@ namespace CompilableClient
     {
         static void Main(string[] args)
         {
-            ISwitchCaseBuilder<int, string> builder = new SwitchCaseBuilder<int, string>();
-            builder.AddCase(0, "zero");
-            builder.AddCase(1, "one");
-            builder.SetDefault("min value");
+            ISwitchCaseFactory factory = new SwitchCaseFactory();
+            factory.AddSwitchCase<int, string>(c =>
+            {
+                c.AddCase(0, "zero");
+                c.AddCase(1, "one");
+                c.SetDefault("default");
+                return c;
+            }, "getString");
 
-            ISwitchCase<int, string> switchCase = builder.GetSwitchCase();
+            factory.TryGetProvider(
+                "getString", 
+                out ISwitchCaseProvider<int, string> switchCase);
 
-            switchCase.TryGetCase(1, out string one);
-            switchCase.TryGetCase(int.MinValue, out string minValue);
+            factory.TryGetDelegate(
+                "getString", 
+                out TryGetDelegate<int, string> _delegate);
+
+            _delegate(1, out string one);
+            _delegate(int.MinValue, out string minValue);
 
             Console.WriteLine(one);
             Console.WriteLine(minValue);

@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Compilable.Delegates
 {
-    public delegate bool TryGetDelegate<TKey, TValue>(TKey key, out TValue value);
+    public delegate bool TryGetDelegate<TCase, TValue>(TCase key, out TValue value);
 }
