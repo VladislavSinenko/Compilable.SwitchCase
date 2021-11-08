@@ -21,12 +21,12 @@ namespace Compilable.Factories
         {
             var strategy = new DelegateSwitchCaseBuildingStrategy<TCase, TValue>(builderConfiguration);
             var builder = new SwitchCaseBuilder<TCase, TValue>();
-            return _builder.AddCase(key, strategy.ConfigureBuilder(builder));
+            return _builder.AddSingletonCase(key, strategy.ConfigureBuilder(builder));
         }
         public bool AddSwitchCase<TCase, TValue>(ISwitchCaseBuildingStrategy<TCase, TValue> strategy, string key)
         {
             var builder = new SwitchCaseBuilder<TCase, TValue>();
-            return _builder.AddCase(key, strategy.ConfigureBuilder(builder));
+            return _builder.AddSingletonCase(key, strategy.ConfigureBuilder(builder));
         }
 
         public bool RemoveSwitchCase<TCase, TValue>(string key)
@@ -63,13 +63,13 @@ namespace Compilable.Factories
         {
             var strategy = new DelegateSwitchCaseBuildingStrategy<TCase, TValue>(builderConfiguration);
             var builder = new SwitchCaseBuilder<TCase, TValue>();
-            return _builder.UpdateCase(key, strategy.ConfigureBuilder(builder));
+            return _builder.UpdateCaseAsSingleton(key, strategy.ConfigureBuilder(builder));
         }
 
         public bool UpdateSwitchCase<TCase, TValue>(ISwitchCaseBuildingStrategy<TCase, TValue> strategy, string key)
         {
             var builder = new SwitchCaseBuilder<TCase, TValue>();
-            return _builder.UpdateCase(key, strategy.ConfigureBuilder(builder));
+            return _builder.UpdateCaseAsSingleton(key, strategy.ConfigureBuilder(builder));
         }
     }
 }

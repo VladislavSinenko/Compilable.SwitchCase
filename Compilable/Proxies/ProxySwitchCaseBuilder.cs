@@ -13,11 +13,21 @@ namespace Compilable.Proxies
         {
             this.builder = builder;
         }
-        public bool AddCase(TCase _case, TValue value)
+        public bool AddSingletonCase(TCase _case, TValue value)
         {
-            bool result = builder.AddCase(_case, value);
+            bool result = builder.AddSingletonCase(_case, value);
 
             if(result)
+                switchCase = null;
+
+            return result;
+        }
+
+        public bool AddCase(TCase _case, Func<TValue> getValueFunc)
+        {
+            bool result = builder.AddCase(_case, getValueFunc);
+
+            if (result)
                 switchCase = null;
 
             return result;
@@ -38,9 +48,21 @@ namespace Compilable.Proxies
             return result;
         }
 
-        public bool SetDefault(TValue value)
+        public void SetDefaultAsSingleton(TValue value)
         {
-            var result = builder.SetDefault(value);
+            builder.SetDefaultAsSingleton(value);
+            switchCase = null;
+        }
+
+        public void SetDefault(Func<TValue> getValueFunc)
+        {
+            builder.SetDefault(getValueFunc);
+            switchCase = null;
+        }
+
+        public bool UpdateCaseAsSingleton(TCase _case, TValue value)
+        {
+            var result = builder.UpdateCaseAsSingleton(_case, value);
 
             if (result)
                 switchCase = null;
@@ -48,9 +70,9 @@ namespace Compilable.Proxies
             return result;
         }
 
-        public bool UpdateCase(TCase _case, TValue value)
+        public bool UpdateCase(TCase _case, Func<TValue> getValueFunc)
         {
-            var result = builder.UpdateCase(_case, value);
+            var result = builder.UpdateCase(_case, getValueFunc);
 
             if (result)
                 switchCase = null;

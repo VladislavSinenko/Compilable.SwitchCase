@@ -13,7 +13,7 @@ namespace Compilable.Builders
         private ParameterExpression _caseValue = Expression.Parameter(typeof(TCase), nameof(_caseValue));
         private ParameterExpression _outValue = Expression.Parameter(typeof(TValue).MakeByRefType(), nameof(_outValue));
         private IDictionary<TCase, SwitchCase> _cases;
-        private KeyValuePair<TValue, BlockExpression> _defaultCase = default;
+        private BlockExpression _defaultCase = null;
         public SwitchCaseBuilder()
         {
             _cases = new Dictionary<TCase, SwitchCase>();
@@ -26,7 +26,7 @@ namespace Compilable.Builders
         {
             _cases = cases;
         }
-        public bool AddCase(TCase _case, TValue value)
+        public bool AddSingletonCase(TCase _case, TValue value)
         {
             bool contains = _cases.ContainsKey(_case);
 
@@ -40,15 +40,28 @@ namespace Compilable.Builders
 
             return contains;
         }
-        public ISwitchCaseProvider<TCase, TValue> GetSwitchCase()
+
+        public bool AddCase(TCase _case, Func<TValue> getValueFunc)
         {
-            if (_defaultCase.Equals(default(KeyValuePair<TValue, BlockExpression>)))
+            bool contains = _cases.ContainsKey(_case);
+
+            if (!contains)
             {
-                BlockExpression defCase = GetExpressionAssignAndReturn(_outValue, default(TValue), false);
-                _defaultCase = new KeyValuePair<TValue, BlockExpression>(default(TValue), defCase);
+                ConstantExpression testValue = Expression.Constant(_case, typeof(TCase));
+                BlockExpression body = GetExpressionAssignAndReturn(_outValue, getValueFunc, true);
+                SwitchCase switchCase = Expression.SwitchCase(body, testValue);
+                _cases.Add(_case, switchCase);
             }
 
-            SwitchExpression switchExpression = Expression.Switch(_caseValue, _defaultCase.Value, _cases.Select(kv => kv.Value).ToArray());
+            return contains;
+        }
+
+        public ISwitchCaseProvider<TCase, TValue> GetSwitchCase()
+        {
+            if (_defaultCase == null)
+                _defaultCase = GetExpressionAssignAndReturn(_outValue, default(TValue), false);
+
+            SwitchExpression switchExpression = Expression.Switch(_caseValue, _defaultCase, _cases.Select(kv => kv.Value).ToArray());
             BlockExpression blockExpression = Expression.Block(switchExpression);
             Expression<TryGetDelegate<TCase, TValue>> lambdaExpression = Expression.Lambda<TryGetDelegate<TCase, TValue>>(blockExpression, _caseValue, _outValue);
             return new SwitchCaseProvider<TCase, TValue>(lambdaExpression);
@@ -59,29 +72,17 @@ namespace Compilable.Builders
             return _cases.Remove(_case);
         }
 
-        public bool SetDefault(TValue value)
+        public void SetDefaultAsSingleton(TValue value)
         {
-            if (_defaultCase.Equals(default(KeyValuePair<TValue, BlockExpression>)))
-            {
-                BlockExpression defCase = GetExpressionAssignAndReturn(_outValue, value, false);
-                _defaultCase = new KeyValuePair<TValue, BlockExpression>(value, defCase);
-                return true;
-            }
-            else if (!_defaultCase.Key.Equals(value))
-            {
-                ConstantExpression valueExpression = Expression.Constant(value, typeof(TValue));
-                Expression asignOutValue = Expression.Assign(_outValue, valueExpression);
-                Expression returnValueExpression = Expression.Constant(false, typeof(bool));
-                IReadOnlyCollection<ParameterExpression> parameters = _defaultCase.Value.Variables;
-                Expression[] expressions = new[] { asignOutValue, returnValueExpression };
-                _defaultCase = new KeyValuePair<TValue, BlockExpression>(value, _defaultCase.Value.Update(parameters, expressions));
-                return true;
-            }
-
-            return false;
+            _defaultCase = GetExpressionAssignAndReturn(_outValue, value, false);
         }
 
-        public bool UpdateCase(TCase _case, TValue value)
+        public void SetDefault(Func<TValue> getValueFunc)
+        {
+            _defaultCase = GetExpressionAssignAndReturn(_outValue, getValueFunc, false);
+        }
+
+        public bool UpdateCaseAsSingleton(TCase _case, TValue value)
         {
             bool contains = _cases.ContainsKey(_case);
 
@@ -97,6 +98,22 @@ namespace Compilable.Builders
             return contains;
         }
 
+        public bool UpdateCase(TCase _case, Func<TValue> getValueFunc)
+        {
+            bool contains = _cases.ContainsKey(_case);
+
+            if (contains)
+            {
+                ConstantExpression testValue = Expression.Constant(_case, typeof(TCase));
+                BlockExpression body = GetExpressionAssignAndReturn(_outValue, getValueFunc, true);
+                SwitchCase switchCase = Expression.SwitchCase(body, testValue);
+                _cases.Remove(_case);
+                _cases.Add(_case, switchCase);
+            }
+
+            return contains;
+        }
+
         private BlockExpression GetExpressionAssignAndReturn(ParameterExpression toAsign, TValue assignValue, bool returnValue)
         {
             ConstantExpression valueExpression = Expression.Constant(assignValue, typeof(TValue));
@@ -104,6 +121,16 @@ namespace Compilable.Builders
             ConstantExpression returnValueExpression = Expression.Constant(returnValue, typeof(bool));
             BlockExpression blockExpression = Expression.Block(asignOutValue, returnValueExpression);
             return blockExpression;
+        }
+
+        private BlockExpression GetExpressionAssignAndReturn(ParameterExpression toAsign, Func<TValue> getAssignValue, bool returnValue)
+        {
+            ConstantExpression targetExpression = Expression.Constant(getAssignValue.Target);
+            MethodCallExpression getValueCallExpression = Expression.Call(targetExpression, getAssignValue.Method);
+            BinaryExpression asignOutValue = Expression.Assign(toAsign, getValueCallExpression);
+            ConstantExpression returnValueExpression = Expression.Constant(returnValue, typeof(bool));
+            BlockExpression body = Expression.Block(asignOutValue, returnValueExpression);
+            return body;
         }
     }
 }

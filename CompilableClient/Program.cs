@@ -13,36 +13,44 @@ namespace CompilableClient
         static void Main(string[] args)
         {
             ISwitchCaseFactory factory = new SwitchCaseFactory();
-            factory.AddSwitchCase<int, string>(c =>
+            factory.AddSwitchCase<int, object>(c =>
             {
-                c.AddCase(0, "zero");
-                c.AddCase(1, "one");
-                c.SetDefault("default");
+                c.AddCase(0, () => new object());
+                c.AddSingletonCase(1, new object());
+                c.SetDefaultAsSingleton("default");
                 return c;
             }, "getString");
 
             factory.TryGetProvider(
                 "getString", 
-                out ISwitchCaseProvider<int, string> switchCase);
+                out ISwitchCaseProvider<int, object> switchCase);
 
             factory.TryGetDelegate(
                 "getString", 
-                out TryGetDelegate<int, string> _delegate);
+                out TryGetDelegate<int, object> _delegate);
 
-            _delegate(1, out string one);
-            _delegate(int.MinValue, out string minValue);
+            _delegate(1, out object one);
+            _delegate(int.MinValue, out object minValue);
 
             Console.WriteLine(one);
             Console.WriteLine(minValue);
 
-            IEnumerable<KeyValuePair<int, string>> cases = switchCase.AsEnumerable();
+            //IEnumerable<KeyValuePair<int, object>> cases = switchCase.AsEnumerable();
 
-            foreach (var _case in cases)
-                Console.WriteLine($"{_case.Key}:{_case.Value}");
+            //foreach (var _case in cases)
+            //    Console.WriteLine($"{_case.Key}:{_case.Value}");
 
-            string _default = switchCase.GetDefaultCase();
+            string _default = (string)switchCase.GetDefaultCase();
 
             Console.WriteLine($"default:{_default ?? "null"}");
+
+            _delegate(0, out var zero1);
+            _delegate(0, out var zero2);
+
+            _delegate(1, out var one2);
+
+            Console.WriteLine(zero1.Equals(zero2));
+            Console.WriteLine(one.Equals(one2));
         }
     }
 }

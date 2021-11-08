@@ -32,7 +32,7 @@ namespace Compilable.Extensions
             var builder = new SwitchCaseBuilder<TCase, TValue>();
 
             foreach (var item in enumerable)
-                builder.AddCase(caseSelector(item), valueSelector(item));
+                builder.AddSingletonCase(caseSelector(item), valueSelector(item));
 
             return builder;
         }
