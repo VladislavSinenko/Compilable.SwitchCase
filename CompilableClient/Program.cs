@@ -35,10 +35,10 @@ namespace CompilableClient
             Console.WriteLine(one);
             Console.WriteLine(minValue);
 
-            //IEnumerable<KeyValuePair<int, object>> cases = switchCase.AsEnumerable();
+            IEnumerable<KeyValuePair<int, object>> cases = switchCase.AsEnumerable();
 
-            //foreach (var _case in cases)
-            //    Console.WriteLine($"{_case.Key}:{_case.Value}");
+            foreach (var _case in cases)
+                Console.WriteLine($"{_case.Key}:{_case.Value}");
 
             string _default = (string)switchCase.GetDefaultCase();
 
