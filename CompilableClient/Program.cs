@@ -15,7 +15,7 @@ namespace CompilableClient
         static void Main(string[] args)
         {
             var builder = new SwitchCaseBuilder<int, string>();
-            var range = Enumerable.Range(0, 1000);
+            var range = Enumerable.Range(0, 100000);
 
             foreach (var item in range)
                 builder.AddSingletonCase(item, item.ToString());
@@ -25,10 +25,8 @@ namespace CompilableClient
 
             var tuples = range.AsParallel().Select(n => { tryGetDigit(n, out string value); return n.ToString() != value; });
 
-            foreach (var item in tuples.Where(t => t))
-            {
-                Console.WriteLine(item);
-            }
+            var errors = tuples.Where(t => t).Count();
+            Console.WriteLine(errors);
         }
     }
 }
