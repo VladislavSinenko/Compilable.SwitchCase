@@ -1,5 +1,6 @@
 using Compilable.Adapters;
 using Compilable.Builders;
+using Compilable.Containers;
 using Compilable.Strategies;
 using System;
 using System.Collections.Generic;
@@ -9,18 +10,10 @@ using System.Text;
 
 namespace Compilable.Extensions
 {
+    
     public static class SwitchCaseExtensions
     {
-        private static ISwitchCaseProvider<ExpressionType, IGetExpressionValue> provider;
-
-        static SwitchCaseExtensions()
-        {
-            ISwitchCaseBuilder<ExpressionType, IGetExpressionValue> builder = new SwitchCaseBuilder<ExpressionType, IGetExpressionValue>();
-            builder.AddCase(ExpressionType.Constant, () => new GetConstantValueStrategy());
-            builder.AddCase(ExpressionType.Call, () => new GetExpressionCallStrategy());
-            provider = builder.GetSwitchCase();
-        }
-        public static IEnumerable<KeyValuePair<TCase, TValue>> AsEnumerable<TCase, TValue>(this ISwitchCaseProvider<TCase, TValue> switchCase)
+        public static IEnumerable<TCase> GetCases<TCase, TValue>(this ISwitchCaseProvider<TCase, TValue> switchCase)
         {
             var expression = switchCase.GetExpression();
             var body = (BlockExpression)expression.Body;
@@ -28,20 +21,26 @@ namespace Compilable.Extensions
             var cases = switchExpression.Cases;
 
             foreach (var item in cases)
-                yield return new KeyValuePair<TCase, TValue>(KeySelector(item), ValueSelector(item));
-
-            TCase KeySelector(SwitchCase item)
+                yield return (TCase)((ConstantExpression)item.TestValues[0]).Value;
+        }
+        public static IEnumerable<TValue> GetValues<TCase, TValue>(this ISwitchCaseProvider<TCase, TValue> switchCase)
+        {
+            var cases = GetCases(switchCase);
+            var tryGetValue = switchCase.GetDelegate();
+            foreach (var item in cases)
             {
-                var testValue = (ConstantExpression)item.TestValues[0];
-                return (TCase)testValue.Value;
+                tryGetValue(item, out TValue value);
+                yield return value;
             }
-            TValue ValueSelector(SwitchCase item)
+        }
+        public static IEnumerable<KeyValuePair<TCase, TValue>> AsEnumerable<TCase, TValue>(this ISwitchCaseProvider<TCase, TValue> switchCase)
+        {
+            var cases = GetCases(switchCase);
+            var tryGetValue = switchCase.GetDelegate();
+            foreach (var item in cases)
             {
-                var adapter = new ExpressionValueAdapter(provider);
-                var itemBody = (BlockExpression)item.Body;
-                var assignment = (BinaryExpression)itemBody.Expressions[0];
-                var value = adapter.GetValue<TValue>(assignment.Right);
-                return value;
+                tryGetValue(item, out TValue value);
+                yield return new KeyValuePair<TCase, TValue>(item, value);
             }
         }
         public static TValue GetDefaultCase<TCase, TValue>(this ISwitchCaseProvider<TCase, TValue> switchCase)
@@ -49,7 +48,7 @@ namespace Compilable.Extensions
             var expression = switchCase.GetExpression();
             var body = (BlockExpression)expression.Body;
             var switchExpression = (SwitchExpression)body.Expressions[0];
-            var adapter = new ExpressionValueAdapter(provider);
+            var adapter = new ExpressionValueAdapter(SwitchCaseContainer.GetExpressionProvider);
             var defBody = (BlockExpression)switchExpression.DefaultBody;
             var asigment = (BinaryExpression)defBody.Expressions[0];
             var value = adapter.GetValue<TValue>(asigment.Right);
