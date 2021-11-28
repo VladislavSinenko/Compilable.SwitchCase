@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Compilable.Strategies
 {
-    public class DelegateSwitchCaseBuildingStrategy<TCase, TValue> : ISwitchCaseBuildingStrategy<TCase, TValue>
+    internal class DelegateSwitchCaseBuildingStrategy<TCase, TValue> : ISwitchCaseBuildingStrategy<TCase, TValue>
     {
         private Func<ISwitchCaseBuilder<TCase, TValue>, ISwitchCaseBuilder<TCase, TValue>> implementationFunc;
         public DelegateSwitchCaseBuildingStrategy(Func<ISwitchCaseBuilder<TCase, TValue>, ISwitchCaseBuilder<TCase, TValue>> implementationFunc)

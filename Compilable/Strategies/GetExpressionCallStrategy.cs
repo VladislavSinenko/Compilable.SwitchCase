@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Compilable.Strategies
 {
-    class GetExpressionCallStrategy : IGetExpressionValue
+    internal class GetExpressionCallStrategy : IGetExpressionValue
     {
         public TValue GetValue<TValue>(Expression expression)
         {

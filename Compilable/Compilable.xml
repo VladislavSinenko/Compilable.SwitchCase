@@ -46,7 +46,7 @@
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.AddSingletonCase(`0,`1)">
             <summary>
-            When implemented add new item to SwitchCase expression
+            Adds new item to SwitchCase expression
             </summary>
             <param name="_case"></param>
             <param name="value"></param>
@@ -54,15 +54,15 @@
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.AddCase(`0,System.Func{`1})">
             <summary>
-            When implemented add new item to SwitchCase expression
+            Adds new item to SwitchCase expression
             </summary>
             <param name="_case"></param>
-            <param name="value"></param>
+            <param name="getValueFunc"></param>
             <returns>Returns true if added. Returns false if given case already presents in current SwitchCase expression</returns>
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.UpdateCaseAsSingleton(`0,`1)">
             <summary>
-            When implemented update existing item in current SwitchCase expression
+            Update existing item in current SwitchCase expression
             </summary>
             <param name="_case"></param>
             <param name="value"></param>
@@ -73,7 +73,7 @@
             When implemented update existing item in current SwitchCase expression
             </summary>
             <param name="_case"></param>
-            <param name="value"></param>
+            <param name="getValueFunc"></param>
             <returns>Returns true if updated. Returns false if given case not presents in current SwitchCase expression</returns>
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.RemoveCase(`0)">
@@ -93,7 +93,7 @@
             <summary>
             When implemented makes current SwitchCase expression return specific value
             </summary>
-            <param name="value"></param>
+            <param name="getValueFunc"></param>
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.GetSwitchCase">
             <summary>
@@ -107,6 +107,310 @@
             </summary>
             <typeparam name="TCase"><inheritdoc/></typeparam>
             <typeparam name="TValue"><inheritdoc/></typeparam>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.#ctor">
+            <summary>
+            Creates SwitchCaseBuilder
+            </summary>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Creates SwitchCaseBuilder with given IEqualityComparer
+            </summary>
+            <param name="caseComparer">IEqualityComparer to compare cases when add update or delete</param>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.AddSingletonCase(`0,`1)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="_case"><inheritdoc/></param>
+            <param name="value"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.AddCase(`0,System.Func{`1})">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="_case"><inheritdoc/></param>
+            <param name="getValueFunc"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.GetSwitchCase">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.RemoveCase(`0)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="_case"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.SetDefaultAsSingleton(`1)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="value"><inheritdoc/></param>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.SetDefault(System.Func{`1})">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="getValueFunc"><inheritdoc/></param>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.UpdateCaseAsSingleton(`0,`1)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="_case"><inheritdoc/></param>
+            <param name="value"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Builders.SwitchCaseBuilder`2.UpdateCase(`0,System.Func{`1})">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="_case"><inheritdoc/></param>
+            <param name="getValueFunc"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="T:Compilable.Delegates.TryGetDelegate`2">
+            <summary>
+            Delegate that represents TryGet function
+            </summary>
+            <typeparam name="TCase">Type of key</typeparam>
+            <typeparam name="TValue">Type of out value</typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns>Returns true if success. Othervice false.</returns>
+        </member>
+        <member name="T:Compilable.Extensions.SwitchCaseExtensions">
+            <summary>
+            Static class that provides methods that extends ISwitchCaseProvider
+            </summary>
+        </member>
+        <member name="M:Compilable.Extensions.SwitchCaseExtensions.GetCases``2(Compilable.ISwitchCaseProvider{``0,``1})">
+            <summary>
+            Method get cases from ISwitchCaseProvider
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="switchCase"></param>
+            <returns>Returns cases from ISwitchCaseProvider</returns>
+        </member>
+        <member name="M:Compilable.Extensions.SwitchCaseExtensions.GetValues``2(Compilable.ISwitchCaseProvider{``0,``1})">
+            <summary>
+            Method get values from ISwitchCaseProvider
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="switchCase"></param>
+            <returns>Returns values from ISwitchCaseProvider</returns>
+        </member>
+        <member name="M:Compilable.Extensions.SwitchCaseExtensions.AsEnumerable``2(Compilable.ISwitchCaseProvider{``0,``1})">
+            <summary>
+            Method transform given ISwitchCaseProvider to IEnumerable of KeyValuePair
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="switchCase"></param>
+            <returns>Returns IEnumerable of KeyValuePair</returns>
+        </member>
+        <member name="M:Compilable.Extensions.SwitchCaseExtensions.GetDefaultValue``2(Compilable.ISwitchCaseProvider{``0,``1})">
+            <summary>
+            Get default value from given ISwitchCaseProvider
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="switchCase"></param>
+            <returns>Returns default value from given ISwitchCaseProvider</returns>
+        </member>
+        <member name="M:Compilable.Extensions.SwitchCaseExtensions.ToSwitchCaseBuilder``3(System.Collections.Generic.IEnumerable{``2},System.Func{``2,``0},System.Func{``2,``1})">
+            <summary>
+            Transfor IEnumerable to ISwitchCaseBuilder
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <typeparam name="T"></typeparam>
+            <param name="enumerable"></param>
+            <param name="caseSelector"></param>
+            <param name="valueSelector"></param>
+            <returns>Returns ISwitchCaseBuilder</returns>
+        </member>
+        <member name="T:Compilable.Factories.ISwitchCaseFactory">
+            <summary>
+            Interface represents SwitchCaseFactory
+            </summary>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.AddSwitchCase``2(System.Func{Compilable.Builders.ISwitchCaseBuilder{``0,``1},Compilable.Builders.ISwitchCaseBuilder{``0,``1}},System.String)">
+            <summary>
+            Creates and add SwitchCase provider to collection by given builderConfiguration Func
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="builderConfiguration">Func that configre and return ISwitchCaseBuilder</param>
+            <param name="key">Key for storing the item in the collection</param>
+            <returns>Returns true if new item added in collection. Othervice false.</returns>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.AddSwitchCase``2(Compilable.Strategies.ISwitchCaseBuildingStrategy{``0,``1},System.String)">
+            <summary>
+            Creates and add SwitchCase provider to collection by given ISwitchCaseBuildingStrategy
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="strategy">Strategy to build ISwitchCaseBuilder</param>
+            <param name="key">Key for storing the item in the collection</param>
+            <returns>Returns true if new item added in collection. False if element already contains.</returns>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.UpdateSwitchCase``2(System.Func{Compilable.Builders.ISwitchCaseBuilder{``0,``1},Compilable.Builders.ISwitchCaseBuilder{``0,``1}},System.String)">
+            <summary>
+            Creates and update SwitchCase provider to collection by given builderConfiguration Func
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="builderConfiguration">Func that configre and return ISwitchCaseBuilder</param>
+            <param name="key">Key for storing the item in the collection</param>
+            <returns>Returns true if item was updated in collection. False if element do not contains in collection.</returns>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.UpdateSwitchCase``2(Compilable.Strategies.ISwitchCaseBuildingStrategy{``0,``1},System.String)">
+            <summary>
+            Creates and update SwitchCase provider to collection by given ISwitchCaseBuildingStrategy
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="strategy">Strategy to build ISwitchCaseBuilder</param>
+            <param name="key">Key for storing the item in the collection</param>
+            <returns>Returns true if item was updated in collection. False if element do not contains in collection.</returns>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.RemoveSwitchCase``2(System.String)">
+            <summary>
+            Removes SwitchCase from collection
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="key"></param>
+            <returns>True if item was deleted. Othervice false.</returns>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.TryGetBuilder``2(System.String,Compilable.Builders.ISwitchCaseBuilder{``0,``1}@)">
+            <summary>
+            Method get builder by given key
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="key"></param>
+            <param name="builder"></param>
+            <returns>Returns true if builder have been found. False if default value returned</returns>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.TryGetDelegate``2(System.String,Compilable.Delegates.TryGetDelegate{``0,``1}@)">
+            <summary>
+            Method get delegate by given key
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="key"></param>
+            <param name="_delegate"></param>
+            <returns>Returns true if delegate have been found. False if default value returned</returns>
+        </member>
+        <member name="M:Compilable.Factories.ISwitchCaseFactory.TryGetProvider``2(System.String,Compilable.ISwitchCaseProvider{``0,``1}@)">
+            <summary>
+            Method get provider by given key
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="key"></param>
+            <param name="provider"></param>
+            <returns>Returns true if provider have been found. False if default value returned</returns>
+        </member>
+        <member name="T:Compilable.Factories.SwitchCaseFactory">
+            <summary>
+            Represents SwitchCaseFactory 
+            </summary>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.#ctor">
+            <summary>
+            Create SwitchCaseFactory
+            </summary>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.AddSwitchCase``2(System.Func{Compilable.Builders.ISwitchCaseBuilder{``0,``1},Compilable.Builders.ISwitchCaseBuilder{``0,``1}},System.String)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="builderConfiguration"><inheritdoc/></param>
+            <param name="key"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.AddSwitchCase``2(Compilable.Strategies.ISwitchCaseBuildingStrategy{``0,``1},System.String)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="strategy"><inheritdoc/></param>
+            <param name="key"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.RemoveSwitchCase``2(System.String)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="key"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.TryGetBuilder``2(System.String,Compilable.Builders.ISwitchCaseBuilder{``0,``1}@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="key"><inheritdoc/></param>
+            <param name="builder"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.TryGetDelegate``2(System.String,Compilable.Delegates.TryGetDelegate{``0,``1}@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="key"><inheritdoc/></param>
+            <param name="_delegate"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.TryGetProvider``2(System.String,Compilable.ISwitchCaseProvider{``0,``1}@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="key"><inheritdoc/></param>
+            <param name="provider"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.UpdateSwitchCase``2(System.Func{Compilable.Builders.ISwitchCaseBuilder{``0,``1},Compilable.Builders.ISwitchCaseBuilder{``0,``1}},System.String)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="builderConfiguration"><inheritdoc/></param>
+            <param name="key"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Factories.SwitchCaseFactory.UpdateSwitchCase``2(Compilable.Strategies.ISwitchCaseBuildingStrategy{``0,``1},System.String)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+            <param name="strategy"><inheritdoc/></param>
+            <param name="key"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
         </member>
         <member name="T:Compilable.SwitchCaseProvider`2">
             <summary>

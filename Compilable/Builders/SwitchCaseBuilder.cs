@@ -1,4 +1,3 @@
-using Compilable.Comparers;
 using Compilable.Delegates;
 using System;
 using System.Collections.Generic;

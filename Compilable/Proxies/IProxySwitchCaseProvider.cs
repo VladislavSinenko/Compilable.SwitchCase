@@ -1,6 +1,6 @@
 namespace Compilable.Proxies
 {
-    public interface IProxySwitchCaseProvider<TCase, TValue>
+    internal interface IProxySwitchCaseProvider<TCase, TValue>
     {
         ISwitchCaseProvider<TCase, TValue> SwitchCase { get; }
     }

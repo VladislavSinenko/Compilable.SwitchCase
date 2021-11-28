@@ -56,8 +56,32 @@ namespace Compilable.Factories
         /// <param name="key"></param>
         /// <returns>True if item was deleted. Othervice false.</returns>
         bool RemoveSwitchCase<TCase, TValue>(string key);
+        /// <summary>
+        /// Method get builder by given key
+        /// </summary>
+        /// <typeparam name="TCase"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="builder"></param>
+        /// <returns>Returns true if builder have been found. False if default value returned</returns>
         bool TryGetBuilder<TCase, TValue>(string key, out ISwitchCaseBuilder<TCase, TValue> builder);
+        /// <summary>
+        /// Method get delegate by given key
+        /// </summary>
+        /// <typeparam name="TCase"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="_delegate"></param>
+        /// <returns>Returns true if delegate have been found. False if default value returned</returns>
         bool TryGetDelegate<TCase, TValue>(string key, out TryGetDelegate<TCase, TValue> _delegate);
+        /// <summary>
+        /// Method get provider by given key
+        /// </summary>
+        /// <typeparam name="TCase"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="provider"></param>
+        /// <returns>Returns true if provider have been found. False if default value returned</returns>
         bool TryGetProvider<TCase, TValue>(string key, out ISwitchCaseProvider<TCase, TValue> provider);
     }
 }
