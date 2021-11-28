@@ -44,17 +44,17 @@ namespace Compilable.Builders
         /// <returns>Returns true if removed. Returns false if given case not presents in current SwitchCase expression</returns>
         bool RemoveCase(TCase _case);
         /// <summary>
-        /// When implemented makes current SwitchCase expression return specific value
+        /// Makes current SwitchCase expression return specific default value
         /// </summary>
         /// <param name="value"></param>
         void SetDefaultAsSingleton(TValue value);
         /// <summary>
-        /// When implemented makes current SwitchCase expression return specific value
+        /// Makes current SwitchCase expression return specific default value
         /// </summary>
         /// <param name="getValueFunc"></param>
         void SetDefault(Func<TValue> getValueFunc);
         /// <summary>
-        /// When implemented create ISwitchCaseProvider which contains configured SwitchCase expression
+        /// Create ISwitchCaseProvider which contains configured SwitchCase expression
         /// </summary>
         /// <returns>Returns ISwitchCaseProvider which contains configured SwitchCase expression</returns>
         ISwitchCaseProvider<TCase, TValue> GetSwitchCase();
