@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Compilable</name>
+    </assembly>
+    <members>
+        <member name="T:Compilable.Adapters.ExpressionValueAdapter">
+            <summary>
+            Provides class to get value from Expression by strategy that contains in given strategyProvider
+            </summary>
+        </member>
+        <member name="M:Compilable.Adapters.ExpressionValueAdapter.#ctor(Compilable.ISwitchCaseProvider{System.Linq.Expressions.ExpressionType,Compilable.Strategies.IGetExpressionValue})">
+            <summary>
+            Creates a new instance of ExpressionValueAdapter with given ISwitchCaseProvider
+            </summary>
+            <param name="strategyProvider">ISwitchCaseProvider to get strategies from</param>
+        </member>
+        <member name="M:Compilable.Adapters.ExpressionValueAdapter.GetValue``1(System.Linq.Expressions.Expression)">
+            <summary>
+            This method gets IGetExpressionValue strategy from strategyProvider and returns value from given expression
+            </summary>
+            <typeparam name="TValue">Type of value to return</typeparam>
+            <param name="expression">Expression to get value from</param>
+            <returns>TValue from given Expression</returns>
+            <exception cref="T:System.ArgumentException">If expression.NodeType is not contains in ISwitchCaseProvider</exception>
+        </member>
+        <member name="T:Compilable.Adapters.IExpressionValueAdapter">
+            <summary>
+            Represents type to get value from Expression
+            </summary>
+        </member>
+        <member name="M:Compilable.Adapters.IExpressionValueAdapter.GetValue``1(System.Linq.Expressions.Expression)">
+            <summary>
+            When implemented returns value from given Expression
+            </summary>
+            <typeparam name="TValue">Type of value to return</typeparam>
+            <param name="expression">Expression to get value from</param>
+            <returns>TValue from given Expression</returns>
+        </member>
+        <member name="T:Compilable.Builders.ISwitchCaseBuilder`2">
+            <summary>
+            Interface represents ISwitchCaseBuilder
+            </summary>
+            <typeparam name="TCase">Type of case that used as key to get value</typeparam>
+            <typeparam name="TValue">Type of value</typeparam>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.AddSingletonCase(`0,`1)">
+            <summary>
+            When implemented add new item to SwitchCase expression
+            </summary>
+            <param name="_case"></param>
+            <param name="value"></param>
+            <returns>Returns true if added. Returns false if given case already presents in current SwitchCase expression</returns>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.AddCase(`0,System.Func{`1})">
+            <summary>
+            When implemented add new item to SwitchCase expression
+            </summary>
+            <param name="_case"></param>
+            <param name="value"></param>
+            <returns>Returns true if added. Returns false if given case already presents in current SwitchCase expression</returns>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.UpdateCaseAsSingleton(`0,`1)">
+            <summary>
+            When implemented update existing item in current SwitchCase expression
+            </summary>
+            <param name="_case"></param>
+            <param name="value"></param>
+            <returns>Returns true if updated. Returns false if given case not presents in current SwitchCase expression</returns>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.UpdateCase(`0,System.Func{`1})">
+            <summary>
+            When implemented update existing item in current SwitchCase expression
+            </summary>
+            <param name="_case"></param>
+            <param name="value"></param>
+            <returns>Returns true if updated. Returns false if given case not presents in current SwitchCase expression</returns>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.RemoveCase(`0)">
+            <summary>
+            When implemented remove existing item from current SwitchCase expression
+            </summary>
+            <param name="_case"></param>
+            <returns>Returns true if removed. Returns false if given case not presents in current SwitchCase expression</returns>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.SetDefaultAsSingleton(`1)">
+            <summary>
+            When implemented makes current SwitchCase expression return specific value
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.SetDefault(System.Func{`1})">
+            <summary>
+            When implemented makes current SwitchCase expression return specific value
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.GetSwitchCase">
+            <summary>
+            When implemented create ISwitchCaseProvider which contains configured SwitchCase expression
+            </summary>
+            <returns>Returns ISwitchCaseProvider which contains configured SwitchCase expression</returns>
+        </member>
+        <member name="T:Compilable.Builders.SwitchCaseBuilder`2">
+            <summary>
+            Represents class that build ISwitchCaseProvider
+            </summary>
+            <typeparam name="TCase"><inheritdoc/></typeparam>
+            <typeparam name="TValue"><inheritdoc/></typeparam>
+        </member>
+        <member name="T:Compilable.SwitchCaseProvider`2">
+            <summary>
+            
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+    </members>
+</doc>

@@ -4,6 +4,11 @@ using System.Linq.Expressions;
 
 namespace Compilable
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TCase"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public class SwitchCaseProvider<TCase, TValue> : ISwitchCaseProvider<TCase, TValue>
     {
         private TryGetDelegate<TCase, TValue> _delegate;

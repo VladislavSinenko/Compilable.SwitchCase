@@ -20,7 +20,8 @@ namespace CompilableClient
             var range = Enumerable.Range(0, 1000);
 
             foreach (var item in range)
-                builder.AddSingletonCase(item, item.ToString());
+                builder.AddCase(item, () => item.ToString());
+
             Console.WriteLine("Builder configured");
             var provider = builder.GetSwitchCase();
             var tryGetDigit = provider.GetDelegate();

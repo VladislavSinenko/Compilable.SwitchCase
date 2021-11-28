@@ -8,16 +8,28 @@ using System.Text;
 
 namespace Compilable.Builders
 {
+    /// <summary>
+    /// Represents class that build ISwitchCaseProvider
+    /// </summary>
+    /// <typeparam name="TCase"><inheritdoc/></typeparam>
+    /// <typeparam name="TValue"><inheritdoc/></typeparam>
     public class SwitchCaseBuilder<TCase, TValue> : ISwitchCaseBuilder<TCase, TValue> // todo: use dependencies for internal logic
     {
         private ParameterExpression _caseValue = Expression.Parameter(typeof(TCase), nameof(_caseValue));
         private ParameterExpression _outValue = Expression.Parameter(typeof(TValue).MakeByRefType(), nameof(_outValue));
         private IDictionary<TCase, SwitchCase> _cases;
         private BlockExpression _defaultCase = null;
+        /// <summary>
+        /// Creates SwitchCaseBuilder
+        /// </summary>
         public SwitchCaseBuilder()
         {
             _cases = new Dictionary<TCase, SwitchCase>();
         }
+        /// <summary>
+        /// Creates SwitchCaseBuilder with given IEqualityComparer
+        /// </summary>
+        /// <param name="caseComparer">IEqualityComparer to compare cases when add update or delete</param>
         public SwitchCaseBuilder(IEqualityComparer<TCase> caseComparer)
         {
             _cases = new Dictionary<TCase, SwitchCase>(caseComparer);
@@ -26,6 +38,12 @@ namespace Compilable.Builders
         {
             _cases = cases;
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="_case"><inheritdoc/></param>
+        /// <param name="value"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public bool AddSingletonCase(TCase _case, TValue value)
         {
             bool contains = _cases.ContainsKey(_case);
@@ -40,7 +58,12 @@ namespace Compilable.Builders
 
             return contains;
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="_case"><inheritdoc/></param>
+        /// <param name="getValueFunc"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public bool AddCase(TCase _case, Func<TValue> getValueFunc)
         {
             bool contains = _cases.ContainsKey(_case);
@@ -55,7 +78,10 @@ namespace Compilable.Builders
 
             return contains;
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <returns><inheritdoc/></returns>
         public ISwitchCaseProvider<TCase, TValue> GetSwitchCase()
         {
             if (_defaultCase == null)
@@ -66,22 +92,37 @@ namespace Compilable.Builders
             Expression<TryGetDelegate<TCase, TValue>> lambdaExpression = Expression.Lambda<TryGetDelegate<TCase, TValue>>(blockExpression, _caseValue, _outValue);
             return new SwitchCaseProvider<TCase, TValue>(lambdaExpression);
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="_case"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public bool RemoveCase(TCase _case)
         {
             return _cases.Remove(_case);
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="value"><inheritdoc/></param>
         public void SetDefaultAsSingleton(TValue value)
         {
             _defaultCase = GetExpressionAssignAndReturn(_outValue, value, false);
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="getValueFunc"><inheritdoc/></param>
         public void SetDefault(Func<TValue> getValueFunc)
         {
             _defaultCase = GetExpressionAssignAndReturn(_outValue, getValueFunc, false);
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="_case"><inheritdoc/></param>
+        /// <param name="value"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public bool UpdateCaseAsSingleton(TCase _case, TValue value)
         {
             bool contains = _cases.ContainsKey(_case);
@@ -97,7 +138,12 @@ namespace Compilable.Builders
 
             return contains;
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="_case"><inheritdoc/></param>
+        /// <param name="getValueFunc"><inheritdoc/></param>
+        /// <returns><inheritdoc/></returns>
         public bool UpdateCase(TCase _case, Func<TValue> getValueFunc)
         {
             bool contains = _cases.ContainsKey(_case);
