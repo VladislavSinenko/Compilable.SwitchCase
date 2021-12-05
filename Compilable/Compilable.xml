@@ -85,19 +85,19 @@
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.SetDefaultAsSingleton(`1)">
             <summary>
-            When implemented makes current SwitchCase expression return specific value
+            Makes current SwitchCase expression return specific default value
             </summary>
             <param name="value"></param>
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.SetDefault(System.Func{`1})">
             <summary>
-            When implemented makes current SwitchCase expression return specific value
+            Makes current SwitchCase expression return specific default value
             </summary>
             <param name="getValueFunc"></param>
         </member>
         <member name="M:Compilable.Builders.ISwitchCaseBuilder`2.GetSwitchCase">
             <summary>
-            When implemented create ISwitchCaseProvider which contains configured SwitchCase expression
+            Create ISwitchCaseProvider which contains configured SwitchCase expression
             </summary>
             <returns>Returns ISwitchCaseProvider which contains configured SwitchCase expression</returns>
         </member>
@@ -412,12 +412,115 @@
             <param name="key"><inheritdoc/></param>
             <returns><inheritdoc/></returns>
         </member>
-        <member name="T:Compilable.SwitchCaseProvider`2">
+        <member name="T:Compilable.ISwitchCaseProvider`2">
             <summary>
-            
+            Represents interface to provide SwitchCase
             </summary>
             <typeparam name="TCase"></typeparam>
             <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:Compilable.ISwitchCaseProvider`2.GetExpression">
+            <summary>
+            Method get expression that represents SwitchCaseExpression
+            </summary>
+            <returns>Returns expression that represents SwitchCaseExpression</returns>
+        </member>
+        <member name="M:Compilable.ISwitchCaseProvider`2.GetDelegate">
+            <summary>
+            Method get delegate that represents SwitchCaseExpression
+            </summary>
+            <returns>Returns delegate that represents SwitchCaseExpression</returns>
+        </member>
+        <member name="T:Compilable.Strategies.IGetExpressionValue">
+            <summary>
+            Represents interface for get value from Expression strategy
+            </summary>
+        </member>
+        <member name="M:Compilable.Strategies.IGetExpressionValue.GetValue``1(System.Linq.Expressions.Expression)">
+            <summary>
+            Method get value from given expression
+            </summary>
+            <typeparam name="TValue"></typeparam>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Compilable.Strategies.ISwitchCaseBuildingStrategy`2">
+            <summary>
+            Represents interface for SwitchCaseBuildingStrategy
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:Compilable.Strategies.ISwitchCaseBuildingStrategy`2.ConfigureBuilder(Compilable.Builders.ISwitchCaseBuilder{`0,`1})">
+            <summary>
+            Method configure ISwitchCaseBuilder
+            </summary>
+            <param name="builder">Builder to configure</param>
+            <returns>Return configured builder</returns>
+        </member>
+        <member name="T:Compilable.Strategies.ISwitchCaseBuildingStrategyBase`2">
+            <summary>
+            Represents interface for SwitchCaseBuildingStrategyBase
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:Compilable.Strategies.ISwitchCaseBuildingStrategyBase`2.GetBuilder">
+            <summary>
+            Method create default builder
+            </summary>
+            <returns>Return default builder</returns>
+        </member>
+        <member name="M:Compilable.Strategies.ISwitchCaseBuildingStrategyBase`2.GetSwitchCase">
+            <summary>
+            Method create SwitchCase from configured builder
+            </summary>
+            <returns>Returns SwitchCase from configured builder</returns>
+        </member>
+        <member name="T:Compilable.Strategies.SwitchCaseBuildingStrategyBase`2">
+            <summary>
+            Represents base class for SwitchCaseBuildingStrategy
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:Compilable.Strategies.SwitchCaseBuildingStrategyBase`2.ConfigureBuilder(Compilable.Builders.ISwitchCaseBuilder{`0,`1})">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="builder"><inheritdoc/></param>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Strategies.SwitchCaseBuildingStrategyBase`2.GetBuilder">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.Strategies.SwitchCaseBuildingStrategyBase`2.GetSwitchCase">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="T:Compilable.SwitchCaseProvider`2">
+            <summary>
+            Represents SwitchCaseProvider
+            </summary>
+            <typeparam name="TCase"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:Compilable.SwitchCaseProvider`2.GetExpression">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <returns><inheritdoc/></returns>
+        </member>
+        <member name="M:Compilable.SwitchCaseProvider`2.GetDelegate">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <returns><inheritdoc/></returns>
         </member>
     </members>
 </doc>

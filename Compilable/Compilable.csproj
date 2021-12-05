@@ -10,4 +10,8 @@
     <DocumentationFile>C:\Users\sinenko.v\Desktop\Compilable\Compilable\Compilable.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\sinenko.v\Desktop\Compilable\Compilable\Compilable.xml</DocumentationFile>
+  </PropertyGroup>
+
 </Project>

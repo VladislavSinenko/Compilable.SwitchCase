@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Compilable.Proxies
 {
-    internal class ProxySwitchCaseBuilder<TCase, TValue> : ISwitchCaseBuilder<TCase, TValue>
+    public class ProxySwitchCaseBuilder<TCase, TValue> : ISwitchCaseBuilder<TCase, TValue>
     {
         private ISwitchCaseBuilder<TCase, TValue> builder;
         private ISwitchCaseProvider<TCase, TValue> switchCase;
